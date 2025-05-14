@@ -1,7 +1,7 @@
 # Instance Config Module: t2.micro
 
 resource "aws_instance" "t2_instance" {
-  ami = "ami-0943317d4313c0f89"
+  ami = "ami-05377cf8cfef186c2"
   instance_type = "t2.micro"
   key_name = var.key_name
   
@@ -11,7 +11,7 @@ resource "aws_instance" "t2_instance" {
   user_data = file("./scripts/t2.micro.sh")
 
   tags = {
-    Name = "[Amate] " + var.instance_name
+    Name = "[Amate] ${var.instance_name}"
     Project = "Amate"
     Type = "EC2/t2.micro"
   }
