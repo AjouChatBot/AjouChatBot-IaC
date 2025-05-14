@@ -14,7 +14,7 @@ resource "aws_vpc" "Amate-VPC" {
 resource "aws_subnet" "Amate-Public-A" {
   vpc_id = aws_vpc.Amate-VPC.id
   cidr_block = "10.0.10.0/24"
-  availability_zone = "ap-northeast-2"
+  availability_zone = "ap-northeast-2a"
   map_public_ip_on_launch = false
   tags = {
     Name = "Amate-Public-A"
@@ -26,7 +26,7 @@ resource "aws_subnet" "Amate-Public-A" {
 resource "aws_subnet" "Amate-Private-A" {
   vpc_id = aws_vpc.Amate-VPC.id
   cidr_block = "10.0.20.0/24"
-  availability_zone = "ap-northeast-2"
+  availability_zone = "ap-northeast-2a"
   map_public_ip_on_launch = false
   tags = {
     Name = "Amate-Private-A"
