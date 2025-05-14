@@ -10,28 +10,21 @@ module "network" {
   source = "./network"
 }
 
-output "vpc_id" {
-  value = module.network.vpc_id
-}
-output "subnet_public_a_id" {
-  value = module.network.subnet_public_a_id
-}
-output "subnet_private_a_id" {
-  value = module.network.subnet_private_a_id
-}
-output "nat_eip_id" {
-  value = module.network.nat_eip_id
-}
-output "nat_gw_id" {
-  value = module.network.nat_gw_id
-}
-
 # 2. 인스턴스 설정 | =================================================
 
 module "key" {
   source = "./key"
 }
 
-output "amate-key" {
-  value = module.key.Amate-key
+module "bastion_sg" {
+  source = "./security/bastion"
+  vpc_id = module.network.vpc_id
+}
+
+module "bastion" {
+  source = "./instance/t2.micro"
+  instance_name = "Bastion Instance"
+  subnet_id = module.network.subnet_public_a_id
+  security_group_id = module.bastion_sg.sgid
+  key_name = module.key.Amate-key.key_name
 }

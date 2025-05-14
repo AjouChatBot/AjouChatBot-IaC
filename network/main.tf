@@ -1,3 +1,4 @@
+# Network Config Module
 
 # VPC Config | =============================
 resource "aws_vpc" "Amate-VPC" {
