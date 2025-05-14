@@ -26,4 +26,12 @@ output "nat_gw_id" {
   value = module.network.nat_gw_id
 }
 
-# =================================================================
+# 2. 인스턴스 설정 | =================================================
+
+module "key" {
+  source = "./key"
+}
+
+output "amate-key" {
+  value = module.key.Amate-key
+}
