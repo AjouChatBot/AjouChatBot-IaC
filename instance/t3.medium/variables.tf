@@ -19,3 +19,8 @@ variable "key_name" {
   type = string
   description = "접속 ECDSA 키 이름"
 }
+
+variable "auto_public_ip" {
+  type = bool
+  description = "공인ip 자동할당여부"
+}
