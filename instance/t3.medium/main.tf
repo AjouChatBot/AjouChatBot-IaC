@@ -9,7 +9,7 @@ resource "aws_instance" "t2_instance" {
   vpc_security_group_ids = [ var.security_group_id ]
   associate_public_ip_address = var.auto_public_ip
   
-  user_data = file("./scripts/t3.medium.sh")
+  user_data = file(var.init_script)
 
   tags = {
     Name = "[Amate] ${var.instance_name}"

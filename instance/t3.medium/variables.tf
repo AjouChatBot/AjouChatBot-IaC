@@ -23,4 +23,11 @@ variable "key_name" {
 variable "auto_public_ip" {
   type = bool
   description = "공인ip 자동할당여부"
+  default = false
+}
+
+variable "init_script" {
+  type = string
+  description = "최초설정 시 실행할 명령스크립트"
+  default = "./scripts/t3.medium.sh"
 }
