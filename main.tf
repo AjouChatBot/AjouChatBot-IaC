@@ -28,6 +28,7 @@ module "bastion" {
   subnet_id = module.network.subnet_public_a_id
   security_group_id = module.bastion_sg.sgid
   key_name = module.key.Amate-key.key_name
+  auto_public_ip = true
 }
 
 ## Private VPC - K8s Master Instance | --------------------------
@@ -39,11 +40,13 @@ module "k8s_master_sgr" {
   source = "./security/k8s/master_rule"
   master_sgid = module.k8s_sg.master_sgid
   worker_sgid = module.k8s_sg.worker_sgid
+  ssh_allow_sgid = module.bastion_sg.sgid
 }
 module "k8s_worker_sgr" {
   source = "./security/k8s/worker_rule"
   master_sgid = module.k8s_sg.master_sgid
   worker_sgid = module.k8s_sg.worker_sgid
+  ssh_allow_sgid = module.bastion_sg.sgid
 }
 
 module "k8s_master" {
