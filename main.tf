@@ -16,6 +16,7 @@ module "key" {
   source = "./key"
 }
 
+## Public VPC - Bastion Instance | -------------------------------
 module "bastion_sg" {
   source = "./security/bastion"
   vpc_id = module.network.vpc_id
@@ -26,5 +27,37 @@ module "bastion" {
   instance_name = "Bastion Instance"
   subnet_id = module.network.subnet_public_a_id
   security_group_id = module.bastion_sg.sgid
+  key_name = module.key.Amate-key.key_name
+}
+
+## Private VPC - K8s Master Instance | --------------------------
+module "k8s_sg" {
+  source = "./security/k8s"
+  vpc_id = module.network.vpc_id
+}
+module "k8s_master_sgr" {
+  source = "./security/k8s/master_rule"
+  master_sgid = module.k8s_sg.master_sgid
+  worker_sgid = module.k8s_sg.worker_sgid
+}
+module "k8s_worker_sgr" {
+  source = "./security/k8s/worker_rule"
+  master_sgid = module.k8s_sg.master_sgid
+  worker_sgid = module.k8s_sg.worker_sgid
+}
+
+module "k8s_master" {
+  source = "./instance/t3.medium"
+  instance_name = "K8s Master"
+  subnet_id = module.network.subnet_private_a_id
+  security_group_id = module.k8s_sg.master_sgid
+  key_name = module.key.Amate-key.key_name
+}
+
+module "k8s_worker_1" {
+  source = "./instance/t3.medium"
+  instance_name = "K8s Worker 1"
+  subnet_id = module.network.subnet_private_a_id
+  security_group_id = module.k8s_sg.worker_sgid
   key_name = module.key.Amate-key.key_name
 }
