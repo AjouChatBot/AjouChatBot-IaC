@@ -12,7 +12,26 @@ variable "worker_sgid" {
   description = "k8s worker sg의 id"
 }
 
+variable "ssh_allow_sgid" {
+  type = string
+  description = "k8s worker에 ssh 접속을 허용할 sgid"
+}
+
 # Security Group Rule Config
+
+## SSH connection config
+# resource "aws_security_group_rule" "Amate-SG-K8s-Worker-SSH" {
+#   type = "ingress"
+
+#   from_port = 22
+#   to_port = 22
+#   protocol = "tcp"
+
+#   source_security_group_id = var.ssh_allow_sgid
+#   security_group_id = var.worker_sgid
+# }
+
+# ## K8s connection config
 
 # resource "aws_security_group_rule" "Amate-SG-K8s-Worker-Inbound-1" {
 #   type = "ingress"
