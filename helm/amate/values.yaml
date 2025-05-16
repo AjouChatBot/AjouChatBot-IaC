@@ -61,7 +61,8 @@ ingress:
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
   hosts:
-    - host: mate.ajou.app
+    # - host: mate.ajou.app
+    - host: ec2-52-78-188-56.ap-northeast-2.compute.amazonaws.com
       paths:
         - path: /api
           pathType: ImplementationSpecific
