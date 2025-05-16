@@ -6,7 +6,7 @@ amateFe:
   replicaCount: 1
   # 컨테이너 이미지를 설정합니다. 자세한 내용은 https://kubernetes.io/docs/concepts/containers/images/ 를 참고하세요.
   image:
-    repository: amate/amate-fe
+    repository: ajoumate/amate-fe
     tag: latest
     pullPolicy: IfNotPresent
   # 서비스를 설정하는 섹션입니다. 자세한 내용은 https://kubernetes.io/docs/concepts/services-networking/service/ 를 참고하세요.
@@ -17,7 +17,7 @@ amateBe:
   # 복제 세트 수를 설정합니다. 자세한 내용은 https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/ 를 참고하세요.
   replicaCount: 1
   image:
-    repository: amate/amate-be
+    repository: ajoumate/amate-be
     tag: latest
     pullPolicy: IfNotPresent
   service:
@@ -70,15 +70,15 @@ ingress:
   hosts:
     - host: mate.ajou.app
       paths:
-        - path: /
+        - path: /api
           pathType: ImplementationSpecific
           backend:
-            serviceName: fe
+            serviceName: be
             servicePort: 3000
         - path: /
           pathType: ImplementationSpecific
           backend:
-            serviceName: be
+            serviceName: fe
             servicePort: 3000
   tls: []
   #  - secretName: chart-example-tls
