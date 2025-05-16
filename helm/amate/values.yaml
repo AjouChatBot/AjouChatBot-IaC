@@ -67,12 +67,12 @@ ingress:
           pathType: ImplementationSpecific
           backend:
             serviceName: be
-            servicePort: 3000
+            servicePort: 8080
         - path: /
           pathType: ImplementationSpecific
           backend:
             serviceName: fe
-            servicePort: 3000
+            servicePort: 80
   tls: []
   #  - secretName: chart-example-tls
   #    hosts:
