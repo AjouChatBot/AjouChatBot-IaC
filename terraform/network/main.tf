@@ -96,7 +96,6 @@ resource "aws_route_table" "Amate-Private-A-Route" {
     cidr_block = "0.0.0.0/0"
     nat_gateway_id = aws_nat_gateway.Amate-NAT-GW.id
   }
-
   tags = {
     Name = "Amate-Private-A-Route"
     Project = "Amate"
@@ -107,3 +106,8 @@ resource "aws_route_table_association" "Amate-Private-A-Route-Connect" {
   subnet_id = aws_subnet.Amate-Private-A.id
   route_table_id = aws_route_table.Amate-Private-A-Route.id
 }
+
+# ALB Config | =============================
+# resource "aws_alb" "Amate-Global-ALB" {
+  
+# }

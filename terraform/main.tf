@@ -29,6 +29,7 @@ module "bastion" {
   security_group_id = module.bastion_sg.sgid
   key_name = module.key.Amate-key.key_name
   auto_public_ip = true
+  init_script = "./scripts/bastion.security.yml"
 }
 
 ## Private VPC - K8s Master Instance | --------------------------
@@ -55,6 +56,8 @@ module "k8s_master" {
   subnet_id = module.network.subnet_private_a_id
   security_group_id = module.k8s_sg.master_sgid
   key_name = module.key.Amate-key.key_name
+  auto_public_ip = false
+  init_script = "./scripts/k8s.master.yml"
 }
 
 module "k8s_worker_1" {
@@ -63,4 +66,6 @@ module "k8s_worker_1" {
   subnet_id = module.network.subnet_private_a_id
   security_group_id = module.k8s_sg.worker_sgid
   key_name = module.key.Amate-key.key_name
+  auto_public_ip = false
+  init_script = "./scripts/k8s.worker.yml"
 }

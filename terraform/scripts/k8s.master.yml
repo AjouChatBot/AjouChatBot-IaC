@@ -1,0 +1,62 @@
+#cloud-config
+package_update: true
+package_upgrade: true
+packages:
+  - docker.io
+  - apt-transport-https
+  - ca-certificates
+  - curl
+  - gnupg
+  - lsb-release
+
+write_files:
+  - path: /usr/local/bin/k8s_master_setup.sh
+    permissions: '0755'
+    content: |
+      #!/bin/bash
+
+      # Docker 데몬 설정
+      mkdir -p /etc/docker
+      cat <<EOF > /etc/docker/daemon.json
+      {
+        "exec-opts": ["native.cgroupdriver=systemd"],
+        "log-driver": "json-file",
+        "log-opts": {
+          "max-size": "100m"
+        },
+        "storage-driver": "overlay2"
+      }
+      EOF
+
+      systemctl enable docker
+      systemctl restart docker
+
+      # Kubernetes repo 추가
+      cat <<EOF > /etc/yum.repos.d/kubernetes.repo
+      [kubernetes]
+      name=Kubernetes
+      baseurl=https://pkgs.k8s.io/core:/stable:/v1.29/rpm/
+      enabled=1
+      gpgcheck=1
+      gpgkey=https://pkgs.k8s.io/core:/stable:/v1.29/rpm/repodata/repomd.xml.key
+      EOF
+
+      dnf install -y kubelet kubeadm kubectl --disableexcludes=kubernetes
+      systemctl enable --now kubelet
+
+      # swap 비활성화
+      swapoff -a
+      sed -i '/ swap / s/^/#/' /etc/fstab
+
+      # kubeadm 초기화
+      kubeadm init --pod-network-cidr=10.244.0.0/16
+
+      # kubectl 권한 설정
+      mkdir -p /root/.kube
+      cp /etc/kubernetes/admin.conf /root/.kube/config
+
+      # flannel CNI 설치
+      kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+
+runcmd:
+  - /usr/local/bin/k8s_master_setup.sh

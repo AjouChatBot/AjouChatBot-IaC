@@ -31,3 +31,15 @@ resource "aws_security_group_rule" "Amate-SG-Bastion-Inbound-2" {
 
   security_group_id = aws_security_group.Amate-SG-Bastion.id
 }
+
+resource "aws_security_group_rule" "Amate-SG-Bastion-Outbound-1" {
+  type = "egress"
+
+  cidr_blocks = [  "0.0.0.0/0" ]
+  from_port = 0
+  to_port = 60000
+  protocol = "tcp"
+
+  security_group_id = aws_security_group.Amate-SG-Bastion.id
+}
+

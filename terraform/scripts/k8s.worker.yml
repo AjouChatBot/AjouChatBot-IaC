@@ -1,0 +1,51 @@
+#cloud-config
+package_update: true
+package_upgrade: true
+packages:
+  - docker.io
+  - apt-transport-https
+  - ca-certificates
+  - curl
+  - gnupg
+  - lsb-release
+
+write_files:
+  - path: /usr/local/bin/k8s_worker_setup.sh
+    permissions: '0755'
+    content: |
+      #!/bin/bash
+
+      # Docker 데몬 설정
+      mkdir -p /etc/docker
+      cat <<EOF > /etc/docker/daemon.json
+      {
+        "exec-opts": ["native.cgroupdriver=systemd"],
+        "log-driver": "json-file",
+        "log-opts": {
+          "max-size": "100m"
+        },
+        "storage-driver": "overlay2"
+      }
+      EOF
+
+      systemctl enable docker
+      systemctl restart docker
+
+      # Kubernetes 패키지 추가
+      curl -fsSL https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
+      echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" > /etc/apt/sources.list.d/kubernetes.list
+      apt-get update
+      apt-get install -y kubelet kubeadm kubectl
+      apt-mark hold kubelet kubeadm kubectl
+
+      # swap 비활성화
+      swapoff -a
+      sed -i '/ swap / s/^/#/' /etc/fstab
+
+      # kubeadm join (Master에서 출력한 명령어를 아래에 삽입)
+      # 예시: kubeadm join <MASTER_IP>:6443 --token <TOKEN> --discovery-token-ca-cert-hash sha256:<HASH>
+      # 실제 값으로 치환하세요.
+      # kubeadm join <MASTER_IP>:6443 --token <TOKEN> --discovery-token-ca-cert-hash sha256:<HASH>
+
+runcmd:
+  - /usr/local/bin/k8s_worker_setup.sh

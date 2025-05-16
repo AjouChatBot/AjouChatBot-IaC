@@ -19,17 +19,17 @@ variable "ssh_allow_sgid" {
 
 # Security Group Rule Config
 
-## SSH connection config
-# resource "aws_security_group_rule" "Amate-SG-K8s-Worker-SSH" {
-#   type = "ingress"
+# SSH connection config
+resource "aws_security_group_rule" "Amate-SG-K8s-Worker-SSH" {
+  type = "ingress"
 
-#   from_port = 22
-#   to_port = 22
-#   protocol = "tcp"
+  from_port = 22
+  to_port = 22
+  protocol = "tcp"
 
-#   source_security_group_id = var.ssh_allow_sgid
-#   security_group_id = var.worker_sgid
-# }
+  source_security_group_id = var.ssh_allow_sgid
+  security_group_id = var.worker_sgid
+}
 
 # ## K8s connection config
 
@@ -77,14 +77,58 @@ variable "ssh_allow_sgid" {
 #   security_group_id = var.worker_sgid
 # }
 
+resource "aws_security_group_rule" "Amate-SG-K8s-Worker-Inbound-Master-TCP" {
+  type = "ingress"
+
+  from_port = 0
+  to_port = 65535
+  protocol = "tcp"
+
+  source_security_group_id = var.master_sgid
+  security_group_id = var.worker_sgid
+}
+
+resource "aws_security_group_rule" "Amate-SG-K8s-Worker-Inbound-Master-UDP" {
+  type = "ingress"
+
+  from_port = 0
+  to_port = 65535
+  protocol = "udp"
+
+  source_security_group_id = var.master_sgid
+  security_group_id = var.worker_sgid
+}
+
+resource "aws_security_group_rule" "Amate-SG-K8s-Worker-Outbound-Master-TCP" {
+  type = "egress"
+
+  from_port = 0
+  to_port = 65535
+  protocol = "tcp"
+
+  source_security_group_id = var.master_sgid
+  security_group_id = var.worker_sgid
+}
+
+resource "aws_security_group_rule" "Amate-SG-K8s-Worker-Outbound-Master-UDP" {
+  type = "egress"
+
+  from_port = 0
+  to_port = 65535
+  protocol = "udp"
+
+  source_security_group_id = var.master_sgid
+  security_group_id = var.worker_sgid
+}
+
 resource "aws_security_group_rule" "Amate-SG-K8s-Worker-Inbound-Common-TCP" {
   type = "ingress"
 
   cidr_blocks = [ "0.0.0.0/0" ]
   from_port = 0
-  to_port = 60000
+  to_port = 65535
   protocol = "tcp"
-
+  
   security_group_id = var.worker_sgid
 }
 
@@ -93,9 +137,9 @@ resource "aws_security_group_rule" "Amate-SG-K8s-Worker-Inbound-Common-UDP" {
 
   cidr_blocks = [ "0.0.0.0/0" ]
   from_port = 0
-  to_port = 60000
+  to_port = 65535
   protocol = "udp"
-
+  
   security_group_id = var.worker_sgid
 }
 
@@ -104,9 +148,9 @@ resource "aws_security_group_rule" "Amate-SG-K8s-Worker-Outbound-Common-TCP" {
 
   cidr_blocks = [ "0.0.0.0/0" ]
   from_port = 0
-  to_port = 60000
+  to_port = 65535
   protocol = "tcp"
-
+  
   security_group_id = var.worker_sgid
 }
 
@@ -115,8 +159,8 @@ resource "aws_security_group_rule" "Amate-SG-K8s-Worker-Outbound-Common-UDP" {
 
   cidr_blocks = [ "0.0.0.0/0" ]
   from_port = 0
-  to_port = 60000
+  to_port = 65535
   protocol = "udp"
-
+  
   security_group_id = var.worker_sgid
 }
