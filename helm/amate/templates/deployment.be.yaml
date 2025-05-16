@@ -1,12 +1,15 @@
 apiVersion: apps/v1
 kind: Deployment
+
 metadata:
-  name: {{ include "amate.fullname" . }}
+  name: {{ include "amate.fullname" . }}-be
   labels:
     {{- include "amate.labels" . | nindent 4 }}
+    component: be
+
 spec:
   {{- if not .Values.autoscaling.enabled }}
-  replicas: {{ .Values.replicaCount }}
+  replicas: {{ .Values.amateBe.replicaCount }}
   {{- end }}
   selector:
     matchLabels:
@@ -33,16 +36,16 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       containers:
-        - name: {{ .Chart.Name }}
+        - name: {{ .Chart.Name }}-be
           {{- with .Values.securityContext }}
           securityContext:
             {{- toYaml . | nindent 12 }}
           {{- end }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          image: "{{ .Values.amateBe.image.repository }}:{{ .Values.amateBe.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.amateBe.image.pullPolicy | default "IfNotPresent" }}
           ports:
             - name: http
-              containerPort: {{ .Values.service.port }}
+              containerPort: {{ .Values.amateBe.service.port }}
               protocol: TCP
           {{- with .Values.livenessProbe }}
           livenessProbe:
