@@ -49,7 +49,7 @@ spec:
               protocol: TCP
           envFrom:
             - secretRef:
-              name: amate-be-env
+                name: amate-be-env
           {{- with .Values.livenessProbe }}
           livenessProbe:
             {{- toYaml . | nindent 12 }}
