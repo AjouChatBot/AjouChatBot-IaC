@@ -47,6 +47,9 @@ spec:
             - name: http
               containerPort: {{ .Values.amateBe.service.port }}
               protocol: TCP
+          envFrom:
+            - secretRef:
+              name: amate-be-env
           {{- with .Values.livenessProbe }}
           livenessProbe:
             {{- toYaml . | nindent 12 }}
