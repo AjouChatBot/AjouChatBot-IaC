@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Service
+
+metadata:
+  name: {{ include "amate.fullname" . }}-mongo
+  labels:
+    {{- include "amate.labels" . | nindent 4 }}
+    component: dbmongo
+
+spec:
+  type: NodePort
+  ports:
+    - port: {{ .Values.amateMongo.service.deployPort }}
+      targetPort: {{ .Values.amateMongo.service.port }}
+      nodePort: {{ .Values.amateMongo.service.deployPort }}
+      protocol: TCP
+      name: mongo
+  selector:
+    {{- include "amate.selectorLabels" . | nindent 4 }}
+    component: dbmongo

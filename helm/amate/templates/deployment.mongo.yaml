@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: {{ include "amate.fullname" . }}-mongo
+  labels:
+    {{- include "amate.labels" . | nindent 4 }}
+    component: dbmongo
+
+spec:
+  replicas: {{ .Values.amateMongo.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "amate.selectorLabels" . | nindent 6 }}
+      component: dbmongo
+  template:
+    metadata:
+      labels:
+        {{- include "amate.labels" . | nindent 8 }}
+        component: dbmongo
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: {{ .Chart.Name }}-mongo
+          image: "{{ .Values.amateMongo.image.repository }}:{{ .Values.amateMongo.image.tag }}"
+          imagePullPolicy: {{ .Values.amateMongo.image.pullPolicy }}
+          ports:
+            - containerPort: {{ .Values.amateMongo.service.port }}
+              name: mongo
+          {{- with .Values.amateMongo.livenessProbe }}
+          livenessProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.amateMongo.readinessProbe }}
+          readinessProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}

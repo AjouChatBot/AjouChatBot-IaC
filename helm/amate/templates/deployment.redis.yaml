@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: {{ include "amate.fullname" . }}-redis
+  labels:
+    {{- include "amate.labels" . | nindent 4 }}
+    component: dbredis
+
+spec:
+  replicas: {{ .Values.amateRedis.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "amate.selectorLabels" . | nindent 6 }}
+      component: dbredis
+  template:
+    metadata:
+      labels:
+        {{- include "amate.labels" . | nindent 8 }}
+        component: dbredis
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: {{ .Chart.Name }}-redis
+          image: "{{ .Values.amateRedis.image.repository }}:{{ .Values.amateRedis.image.tag }}"
+          imagePullPolicy: {{ .Values.amateRedis.image.pullPolicy }}
+          ports:
+            - containerPort: {{ .Values.amateRedis.service.port }}
+              name: redis
+          {{- with .Values.amateRedis.livenessProbe }}
+          livenessProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.amateRedis.readinessProbe }}
+          readinessProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}

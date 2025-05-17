@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Service
+
+metadata:
+  name: {{ include "amate.fullname" . }}-redis
+  labels:
+    {{- include "amate.labels" . | nindent 4 }}
+    component: dbredis
+
+spec:
+  type: ClusterIP
+  ports:
+    - port: {{ .Values.amateRedis.service.deployPort }}
+      targetPort: {{ .Values.amateRedis.service.port }}
+      nodePort: {{ .Values.amateRedis.service.deployPort }}
+      protocol: TCP
+      name: redis
+  selector:
+    {{- include "amate.selectorLabels" . | nindent 4 }}
+    component: dbredis

@@ -54,7 +54,7 @@ amateMongo:
     pullPolicy: IfNotPresent
   service:
     port: 27017
-    deployPort: 27017
+    deployPort: 30010
   livenessProbe:
     exec:
       command:
@@ -82,7 +82,7 @@ amateRedis:
     pullPolicy: IfNotPresent
   service:
     port: 6379
-    deployPort: 6379
+    deployPort: 30011
     
   # livenessProbe:
   #   exec:
