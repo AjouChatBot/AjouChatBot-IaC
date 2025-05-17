@@ -12,14 +12,16 @@ amateFe:
   # 서비스를 설정하는 섹션입니다. 자세한 내용은 https://kubernetes.io/docs/concepts/services-networking/service/ 를 참고하세요.
   service:
     port: 3000
+    deployPort: 80
+  # 라이브니스 및 레디니스 프로브를 설정합니다. 자세한 내용은 https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/ 를 참고하세요.
   livenessProbe:
     httpGet:
       path: /
-      port: 3000
+      port: 3000 # 컨테이너 내부포트 입력
   readinessProbe:
     httpGet:
       path: /
-      port: 3000
+      port: 3000 # 컨테이너 내부포트 입력
 
 amateBe:
   # 복제 세트 수를 설정합니다. 자세한 내용은 https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/ 를 참고하세요.
@@ -30,6 +32,8 @@ amateBe:
     pullPolicy: Always
   service:
     port: 8080
+    deployPort: 80
+  # 라이브니스 및 레디니스 프로브를 설정합니다. 자세한 내용은 https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/ 를 참고하세요.
   livenessProbe:
     httpGet:
       path: /
@@ -84,12 +88,12 @@ ingress:
           pathType: ImplementationSpecific
           backend:
             serviceName: be
-            servicePort: 8080
+            servicePort: 80
         - path: /
           pathType: ImplementationSpecific
           backend:
             serviceName: fe
-            servicePort: 3000
+            servicePort: 80
   tls: []
   #  - secretName: chart-example-tls
   #    hosts:
@@ -105,16 +109,6 @@ resources: {}
   # requests:
   #   cpu: 100m
   #   memory: 128Mi
-
-# 라이브니스 및 레디니스 프로브를 설정합니다. 자세한 내용은 https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/ 를 참고하세요.
-livenessProbe:
-  httpGet:
-    path: /
-    port: http
-readinessProbe:
-  httpGet:
-    path: /
-    port: http
 
 # 오토스케일링 설정 섹션입니다. 자세한 내용은 https://kubernetes.io/docs/concepts/workloads/autoscaling/ 를 참고하세요.
 autoscaling:

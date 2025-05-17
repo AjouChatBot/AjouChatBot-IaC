@@ -10,8 +10,8 @@ metadata:
 spec:
   type: ClusterIP
   ports:
-    - port: {{ .Values.amateFe.service.port }}
-      targetPort: http
+    - port: {{ .Values.amateFe.service.deployPort }}
+      targetPort: {{ .Values.amateFe.service.port }}
       protocol: TCP
       name: http
   selector:
