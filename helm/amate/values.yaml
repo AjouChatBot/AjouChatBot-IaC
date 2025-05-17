@@ -45,6 +45,77 @@ amateBe:
       path: /
       port: 8080
 
+amateMongo:
+  replicaCount: 1
+  component: dbmongo
+  image:
+    repository: mongo
+    tag: latest
+    pullPolicy: IfNotPresent
+  service:
+    port: 27017
+    deployPort: 27017
+  livenessProbe:
+    exec:
+      command:
+        - /bitnami/scripts/ping-mongodb.sh
+    initialDelaySeconds: 30
+    periodSeconds: 20
+    timeoutSeconds: 10
+    failureThreshold: 6
+
+  readinessProbe:
+    exec:
+      command:
+        - /bitnami/scripts/readiness-probe.sh
+    initialDelaySeconds: 5
+    periodSeconds: 10
+    timeoutSeconds: 5
+    failureThreshold: 6
+    
+amateRedis:
+  replicaCount: 1
+  component: dbredis
+  image:
+    repository: redis
+    tag: latest
+    pullPolicy: IfNotPresent
+  service:
+    port: 6379
+    deployPort: 6379
+    
+  # livenessProbe:
+  #   exec:
+  #     command:
+  #       - sh
+  #       - -c
+  #       - |
+  #         if [ "$(redis-cli -a "$REDIS_PASSWORD" ping)" = "PONG" ]; then
+  #           exit 0
+  #         else
+  #           exit 1
+  #         fi
+  #   initialDelaySeconds: 30
+  #   periodSeconds: 10
+  #   timeoutSeconds: 5
+  #   failureThreshold: 3
+
+  # readinessProbe:
+  #   exec:
+  #     command:
+  #       - sh
+  #       - -c
+  #       - |
+  #         if [ "$(redis-cli -a "$REDIS_PASSWORD" ping)" = "PONG" ]; then
+  #           exit 0
+  #         else
+  #           exit 1
+  #         fi
+  #   initialDelaySeconds: 5
+  #   periodSeconds: 10
+  #   timeoutSeconds: 5
+  #   failureThreshold: 3
+
 # 개인 저장소에서 이미지를 가져오기 위한 비밀 정보를 설정합니다. 자세한 내용은 https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/ 를 참고하세요.
 imagePullSecrets: []
 # 차트 이름을 재정의할 때 사용합니다.
