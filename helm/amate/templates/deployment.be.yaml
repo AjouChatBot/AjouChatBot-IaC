@@ -51,7 +51,7 @@ spec:
               protocol: TCP
           env:
             - name: MONGODB_URI
-              value: "mongodb://{{ .Release.Name }}-mongo:27017/ajouchatbot"
+              value: "mongodb://{{ .Release.Name }}-mongo:{{ .Values.amateBe.mongoDbPort }}"
           envFrom:
             - secretRef:
                 name: amate-be-env
