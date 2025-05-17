@@ -137,3 +137,10 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+controller:
+  service:
+    type: NodePort
+    nodePorts:
+      http: 32080
+      https: 32443
