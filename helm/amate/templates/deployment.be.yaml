@@ -50,11 +50,11 @@ spec:
           envFrom:
             - secretRef:
                 name: amate-be-env
-          {{- with .Values.livenessProbe }}
+          {{- with .Values.amateBe.livenessProbe }}
           livenessProbe:
             {{- toYaml . | nindent 12 }}
           {{- end }}
-          {{- with .Values.readinessProbe }}
+          {{- with .Values.amateBe.readinessProbe }}
           readinessProbe:
             {{- toYaml . | nindent 12 }}
           {{- end }}
