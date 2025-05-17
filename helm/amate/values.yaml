@@ -11,7 +11,7 @@ amateFe:
     pullPolicy: Always
   # 서비스를 설정하는 섹션입니다. 자세한 내용은 https://kubernetes.io/docs/concepts/services-networking/service/ 를 참고하세요.
   service:
-    port: 80
+    port: 3000
 
 amateBe:
   # 복제 세트 수를 설정합니다. 자세한 내용은 https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/ 를 참고하세요.
@@ -126,3 +126,12 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+controller:
+  service:
+    port:
+      http: 80
+      https: 443
+    targetPorts:
+      http: http
+      https: https
