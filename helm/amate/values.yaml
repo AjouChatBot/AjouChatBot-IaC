@@ -82,7 +82,8 @@ ingress:
     # kubernetes.io/tls-acme: "true"
   hosts:
     # - host: mate.ajou.app
-    - host: ec2-52-78-188-56.ap-northeast-2.compute.amazonaws.com
+    # - host: ec2-52-78-188-56.ap-northeast-2.compute.amazonaws.com
+    - host: test.milide.net
       paths:
         - path: /api
           pathType: ImplementationSpecific
