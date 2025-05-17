@@ -55,23 +55,23 @@ amateMongo:
   service:
     port: 27017
     deployPort: 30010
-  livenessProbe:
-    exec:
-      command:
-        - /bitnami/scripts/ping-mongodb.sh
-    initialDelaySeconds: 30
-    periodSeconds: 20
-    timeoutSeconds: 10
-    failureThreshold: 6
+  # livenessProbe:
+  #   exec:
+  #     command:
+  #       - /bitnami/scripts/ping-mongodb.sh
+  #   initialDelaySeconds: 30
+  #   periodSeconds: 20
+  #   timeoutSeconds: 10
+  #   failureThreshold: 6
 
-  readinessProbe:
-    exec:
-      command:
-        - /bitnami/scripts/readiness-probe.sh
-    initialDelaySeconds: 5
-    periodSeconds: 10
-    timeoutSeconds: 5
-    failureThreshold: 6
+  # readinessProbe:
+  #   exec:
+  #     command:
+  #       - /bitnami/scripts/readiness-probe.sh
+  #   initialDelaySeconds: 5
+  #   periodSeconds: 10
+  #   timeoutSeconds: 5
+  #   failureThreshold: 6
     
 amateRedis:
   replicaCount: 1
