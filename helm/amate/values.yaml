@@ -5,6 +5,7 @@ amateFe:
   # 복제 세트 수를 설정합니다. 자세한 내용은 https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/ 를 참고하세요.
   replicaCount: 1
   # 컨테이너 이미지를 설정합니다. 자세한 내용은 https://kubernetes.io/docs/concepts/containers/images/ 를 참고하세요.
+  component: fe
   image:
     repository: ajoumate/amate-fe
     tag: latest
@@ -26,6 +27,7 @@ amateFe:
 amateBe:
   # 복제 세트 수를 설정합니다. 자세한 내용은 https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/ 를 참고하세요.
   replicaCount: 1
+  component: be
   image:
     repository: ajoumate/amate-be
     tag: latest
