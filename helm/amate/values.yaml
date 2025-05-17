@@ -89,7 +89,7 @@ ingress:
           pathType: ImplementationSpecific
           backend:
             serviceName: fe
-            servicePort: 80
+            servicePort: 3000
   tls: []
   #  - secretName: chart-example-tls
   #    hosts:
@@ -142,12 +142,3 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
-
-controller:
-  service:
-    port:
-      http: 80
-      https: 443
-    targetPorts:
-      http: http
-      https: https
