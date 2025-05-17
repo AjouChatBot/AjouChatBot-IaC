@@ -27,6 +27,8 @@ spec:
         - name: {{ .Chart.Name }}-mongo
           image: "{{ .Values.amateMongo.image.repository }}:{{ .Values.amateMongo.image.tag }}"
           imagePullPolicy: {{ .Values.amateMongo.image.pullPolicy }}
+          command: ["mongod"]
+          args: ["--bind_ip_all"]
           ports:
             - containerPort: {{ .Values.amateMongo.service.port }}
               name: mongo
