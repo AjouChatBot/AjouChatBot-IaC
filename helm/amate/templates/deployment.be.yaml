@@ -49,6 +49,9 @@ spec:
             - name: http
               containerPort: {{ .Values.amateBe.service.port }}
               protocol: TCP
+          env:
+            - name: MONGODB_URI
+              value: "mongodb://{{ .Release.Name }}-mongo:27017/ajouchatbot"
           envFrom:
             - secretRef:
                 name: amate-be-env
