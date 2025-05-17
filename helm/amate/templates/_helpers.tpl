@@ -48,7 +48,6 @@ Selector labels
 {{- define "amate.selectorLabels" -}}
 app.kubernetes.io/name: {{ include "amate.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
-component: {{ .Values.amateFe.component }}
 {{- end }}
 
 {{/*

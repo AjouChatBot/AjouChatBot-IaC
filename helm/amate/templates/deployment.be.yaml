@@ -14,6 +14,7 @@ spec:
   selector:
     matchLabels:
       {{- include "amate.selectorLabels" . | nindent 6 }}
+      component: be
   template:
     metadata:
       {{- with .Values.podAnnotations }}
@@ -25,6 +26,7 @@ spec:
         {{- with .Values.podLabels }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
+        component: be
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
