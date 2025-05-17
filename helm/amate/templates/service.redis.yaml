@@ -8,7 +8,7 @@ metadata:
     component: dbredis
 
 spec:
-  type: ClusterIP
+  type: NodePort
   ports:
     - port: {{ .Values.amateRedis.service.deployPort }}
       targetPort: {{ .Values.amateRedis.service.port }}
