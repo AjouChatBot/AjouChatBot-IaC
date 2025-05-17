@@ -8,10 +8,11 @@ metadata:
     component: fe
 
 spec:
-  type: ClusterIP
+  type: NodePort
   ports:
     - port: {{ .Values.amateFe.service.deployPort }}
       targetPort: {{ .Values.amateFe.service.port }}
+      nodePort: {{ .Values.amateFe.service.deployPort }}
       protocol: TCP
       name: http
   selector:

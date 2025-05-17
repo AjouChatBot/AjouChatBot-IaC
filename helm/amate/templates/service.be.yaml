@@ -8,10 +8,11 @@ metadata:
     component: be
 
 spec:
-  type: ClusterIP
+  type: NodePort
   ports:
     - port: {{ .Values.amateBe.service.deployPort }}
       targetPort: {{ .Values.amateBe.service.port }}
+      nodePort: {{ .Values.amateBe.service.deployPort }}
       protocol: TCP
       name: http
   selector:
