@@ -55,6 +55,39 @@ amateBe:
   #   timeoutSeconds: 2
   #   failureThreshold: 3
 
+amateAi:
+  # 복제 세트 수를 설정합니다. 자세한 내용은 https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/ 를 참고하세요.
+  replicaCount: 1
+  component: ai
+  image:
+    repository: ajoumate/amate-ai
+    tag: latest
+    pullPolicy: Always
+  service:
+    port: 8000
+    deployPort: 30003
+  redisPort: 30011
+  milvusPort: 30012
+
+  # 라이브니스 및 레디니스 프로브를 설정합니다. 자세한 내용은 https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/ 를 참고하세요.
+  # livenessProbe:
+  #   httpGet:
+  #     path: /health
+  #     port: 8080
+  #   initialDelaySeconds: 10
+  #   periodSeconds: 10
+  #   timeoutSeconds: 2
+  #   failureThreshold: 3
+
+  # readinessProbe:
+  #   httpGet:
+  #     path: /health
+  #     port: 8080
+  #   initialDelaySeconds: 5
+  #   periodSeconds: 5
+  #   timeoutSeconds: 2
+  #   failureThreshold: 3
+
 amateMongo:
   replicaCount: 1
   component: dbmongo
@@ -124,6 +157,45 @@ amateRedis:
   #   initialDelaySeconds: 5
   #   periodSeconds: 10
   #   timeoutSeconds: 5
+  #   failureThreshold: 3
+
+amateMilvus:
+  replicaCount: 1
+  component: dbmilvus
+  image:
+    repository: milvusdb/milvus
+    tag: latest
+    pullPolicy: IfNotPresent
+  service:
+    port: 19530
+    deployPort: 30012
+  etcd:
+    image:
+      repository: quay.io/coreos/etcd
+      tag: v3.5.5
+    servicePort: 2379
+  minio:
+    image:
+      repository: minio/minio
+      tag: latest
+    servicePort: 9000
+    
+  # livenessProbe:
+  #   httpGet:
+  #     path: /healthz
+  #     port: 19530
+  #   initialDelaySeconds: 30
+  #   periodSeconds: 10
+  #   timeoutSeconds: 5
+  #   failureThreshold: 3
+
+  # readinessProbe:
+  #   httpGet:
+  #     path: /healthz
+  #     port: 19530
+  #   initialDelaySeconds: 10
+  #   periodSeconds: 5
+  #   timeoutSeconds: 3
   #   failureThreshold: 3
 
 # 개인 저장소에서 이미지를 가져오기 위한 비밀 정보를 설정합니다. 자세한 내용은 https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/ 를 참고하세요.
