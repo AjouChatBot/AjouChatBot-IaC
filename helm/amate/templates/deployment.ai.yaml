@@ -53,11 +53,11 @@ spec:
             - name: REDIS_HOST
               value: "{{ .Release.Name }}-redis"
             - name: REDIS_PORT
-              value: "{{ .Values.amateAi.redisPort }}"
+              value: "{{ .Values.amateRedis.service.deployPort }}"
             - name: MILVUS_HOST
               value: "{{ .Release.Name }}-milvus"
             - name: MILVUS_PORT
-              value: "{{ .Values.amateAi.milvusPort }}"
+              value: "{{ .Values.amateMilvus.deployPort }}"
           envFrom:
             - secretRef:
                 name: amate-ai-env
