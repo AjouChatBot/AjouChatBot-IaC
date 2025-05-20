@@ -1,0 +1,16 @@
+{{- if .Values.amateMongo.persistence.enabled }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "amate.fullname" . }}-mongo-pvc
+  labels:
+    app.kubernetes.io/name: {{ include "amate.name" . }}
+    app.kubernetes.io/component: {{ .Values.amateMongo.component }}
+spec:
+  accessModes:
+    - {{ .Values.amateMongo.persistence.accessMode }}
+  resources:
+    requests:
+      storage: {{ .Values.amateMongo.persistence.size }}
+  storageClassName: {{ .Values.amateMongo.persistence.storageClass }}
+{{- end }}

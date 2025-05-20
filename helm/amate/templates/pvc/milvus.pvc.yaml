@@ -1,0 +1,16 @@
+{{- if .Values.amateMilvus.persistence.enabled }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "amate.fullname" . }}-milvus-pvc
+  labels:
+    app.kubernetes.io/name: {{ include "amate.name" . }}
+    app.kubernetes.io/component: {{ .Values.amateMilvus.component }}
+spec:
+  accessModes:
+    - {{ .Values.amateMilvus.persistence.accessMode }}
+  resources:
+    requests:
+      storage: {{ .Values.amateMilvus.persistence.size }}
+  storageClassName: {{ .Values.amateMilvus.persistence.storageClass }}
+{{- end }}

@@ -15,12 +15,19 @@ spec:
       labels:
         app.kubernetes.io/component: {{ .Values.amateMilvus.component }}
     spec:
+      volumes:
+        - name: milvus-storage
+          persistentVolumeClaim:
+            claimName: {{ include "amate.fullname" . }}-milvus-pvc
       containers:
         - name: milvus
           image: "{{ .Values.amateMilvus.image.repository }}:{{ .Values.amateMilvus.image.tag }}"
           imagePullPolicy: {{ .Values.amateMilvus.image.pullPolicy }}
           ports:
             - containerPort: {{ .Values.amateMilvus.service.port }}
+          volumeMounts:
+            - name: milvus-storage
+              mountPath: /var/lib/milvus
           args: ["milvus", "run", "standalone"]
           {{- with .Values.amateMilvus.livenessProbe }}
           livenessProbe:
@@ -35,6 +42,9 @@ spec:
           image: "{{ .Values.amateMilvus.etcd.image.repository }}:{{ .Values.amateMilvus.etcd.image.tag }}"
           ports:
             - containerPort: {{ .Values.amateMilvus.etcd.servicePort }}
+          volumeMounts:
+            - name: milvus-storage
+              mountPath: /etcd-data
           command: ["/usr/local/bin/etcd"]
           args:
             - "--advertise-client-urls=http://0.0.0.0:2379"
@@ -45,6 +55,9 @@ spec:
           image: "{{ .Values.amateMilvus.minio.image.repository }}:{{ .Values.amateMilvus.minio.image.tag }}"
           ports:
             - containerPort: {{ .Values.amateMilvus.minio.servicePort }}
+          volumeMounts:
+            - name: milvus-storage
+              mountPath: /data
           args:
             - server
             - /data

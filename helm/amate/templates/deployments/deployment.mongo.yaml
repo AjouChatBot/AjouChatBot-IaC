@@ -23,6 +23,10 @@ spec:
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+      volumes:
+        - name: mongo-storage
+          persistentVolumeClaim:
+            claimName: {{ include "amate.fullname" . }}-mongo-pvc
       containers:
         - name: {{ .Chart.Name }}-mongo
           image: "{{ .Values.amateMongo.image.repository }}:{{ .Values.amateMongo.image.tag }}"
@@ -32,6 +36,9 @@ spec:
           ports:
             - containerPort: {{ .Values.amateMongo.service.port }}
               name: mongo
+          volumeMounts:
+            - name: mongo-storage
+              mountPath: /data/db
           {{- with .Values.amateMongo.livenessProbe }}
           livenessProbe:
             {{- toYaml . | nindent 12 }}

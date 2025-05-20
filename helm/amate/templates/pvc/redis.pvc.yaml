@@ -1,0 +1,16 @@
+{{- if .Values.amateRedis.persistence.enabled }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "amate.fullname" . }}-redis-pvc
+  labels:
+    app.kubernetes.io/name: {{ include "amate.name" . }}
+    app.kubernetes.io/component: {{ .Values.amateRedis.component }}
+spec:
+  accessModes:
+    - {{ .Values.amateRedis.persistence.accessMode }}
+  resources:
+    requests:
+      storage: {{ .Values.amateRedis.persistence.size }}
+  storageClassName: {{ .Values.amateRedis.persistence.storageClass }}
+{{- end }}

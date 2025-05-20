@@ -23,6 +23,10 @@ spec:
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+      volumes:
+        - name: redis-storage
+          persistentVolumeClaim:
+            claimName: {{ include "amate.fullname" . }}-redis-pvc
       containers:
         - name: {{ .Chart.Name }}-redis
           image: "{{ .Values.amateRedis.image.repository }}:{{ .Values.amateRedis.image.tag }}"
@@ -30,6 +34,9 @@ spec:
           ports:
             - containerPort: {{ .Values.amateRedis.service.port }}
               name: redis
+          volumeMounts:
+            - name: redis-storage
+              mountPath: /data  # redis는 /data에 저장
           {{- with .Values.amateRedis.livenessProbe }}
           livenessProbe:
             {{- toYaml . | nindent 12 }}

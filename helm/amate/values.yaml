@@ -98,6 +98,11 @@ amateMongo:
   service:
     port: 27017
     deployPort: 30010
+  persistence:
+    enabled: true
+    storageClass: gp2
+    accessMode: ReadWriteOnce
+    size: 50Gi
   # livenessProbe:
   #   exec:
   #     command:
@@ -126,6 +131,11 @@ amateRedis:
   service:
     port: 6379
     deployPort: 30011
+  persistence:
+    enabled: true
+    storageClass: gp2
+    accessMode: ReadWriteOnce
+    size: 5Gi
     
   # livenessProbe:
   #   exec:
@@ -179,6 +189,11 @@ amateMilvus:
       repository: minio/minio
       tag: latest
     servicePort: 9000
+  persistence:
+    enabled: true
+    storageClass: gp2
+    accessMode: ReadWriteOnce
+    size: 100Gi
     
   # livenessProbe:
   #   httpGet:
