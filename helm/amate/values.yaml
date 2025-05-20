@@ -100,7 +100,7 @@ amateMongo:
     deployPort: 30010
   persistence:
     enabled: true
-    storageClass: gp2
+    storageClass: gp3
     accessMode: ReadWriteOnce
     size: 50Gi
   # livenessProbe:
@@ -133,7 +133,7 @@ amateRedis:
     deployPort: 30011
   persistence:
     enabled: true
-    storageClass: gp2
+    storageClass: gp3
     accessMode: ReadWriteOnce
     size: 5Gi
     
@@ -191,7 +191,7 @@ amateMilvus:
     servicePort: 9000
   persistence:
     enabled: true
-    storageClass: gp2
+    storageClass: gp3
     accessMode: ReadWriteOnce
     size: 100Gi
     

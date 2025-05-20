@@ -1,6 +1,7 @@
 {{- if .Values.amateMongo.persistence.enabled }}
 apiVersion: v1
 kind: PersistentVolumeClaim
+provisioner: ebs.csi.aws.com
 metadata:
   name: {{ include "amate.fullname" . }}-mongo-pvc
   labels:
