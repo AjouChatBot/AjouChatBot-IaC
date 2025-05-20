@@ -21,6 +21,7 @@ spec:
           imagePullPolicy: {{ .Values.amateMilvus.image.pullPolicy }}
           ports:
             - containerPort: {{ .Values.amateMilvus.service.port }}
+          args: ["milvus", "run", "standalone"]
           {{- with .Values.amateMilvus.livenessProbe }}
           livenessProbe:
             {{- toYaml . | nindent 12 }}
