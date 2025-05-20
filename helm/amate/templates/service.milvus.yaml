@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "amate.fullname" . }}-milvus
+  labels:
+    app.kubernetes.io/name: {{ include "amate.name" . }}
+    app.kubernetes.io/component: {{ .Values.amateMilvus.component }}
+spec:
+  type: NodePort
+  ports:
+    - port: {{ .Values.amateMilvus.service.port }}
+      targetPort: {{ .Values.amateMilvus.service.port }}
+      nodePort: {{ .Values.amateMilvus.service.deployPort }}
+      protocol: TCP
+      name: milvus
+    - port: {{ .Values.amateMilvus.etcd.servicePort }}
+      targetPort: {{ .Values.amateMilvus.etcd.servicePort }}
+      protocol: TCP
+      name: etcd
+    - port: {{ .Values.amateMilvus.minio.servicePort }}
+      targetPort: {{ .Values.amateMilvus.minio.servicePort }}
+      protocol: TCP
+      name: minio
+  selector:
+    app.kubernetes.io/component: {{ .Values.amateMilvus.component }}

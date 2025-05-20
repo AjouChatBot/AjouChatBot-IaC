@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "amate.fullname" . }}-milvus
+  labels:
+    app.kubernetes.io/name: {{ include "amate.name" . }}
+    app.kubernetes.io/component: {{ .Values.amateMilvus.component }}
+spec:
+  replicas: {{ .Values.amateMilvus.replicaCount }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: {{ .Values.amateMilvus.component }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: {{ .Values.amateMilvus.component }}
+    spec:
+      containers:
+        - name: milvus
+          image: "{{ .Values.amateMilvus.image.repository }}:{{ .Values.amateMilvus.image.tag }}"
+          imagePullPolicy: {{ .Values.amateMilvus.image.pullPolicy }}
+          ports:
+            - containerPort: {{ .Values.amateMilvus.service.port }}
+          {{- with .Values.amateMilvus.livenessProbe }}
+          livenessProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.amateMilvus.readinessProbe }}
+          readinessProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+
+        - name: etcd
+          image: "{{ .Values.amateMilvus.etcd.image.repository }}:{{ .Values.amateMilvus.etcd.image.tag }}"
+          ports:
+            - containerPort: {{ .Values.amateMilvus.etcd.servicePort }}
+          command: ["/usr/local/bin/etcd"]
+          args:
+            - "--advertise-client-urls=http://0.0.0.0:2379"
+            - "--listen-client-urls=http://0.0.0.0:2379"
+            - "--data-dir=/etcd-data"
+
+        - name: minio
+          image: "{{ .Values.amateMilvus.minio.image.repository }}:{{ .Values.amateMilvus.minio.image.tag }}"
+          ports:
+            - containerPort: {{ .Values.amateMilvus.minio.servicePort }}
+          args:
+            - server
+            - /data
