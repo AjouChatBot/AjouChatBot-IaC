@@ -57,7 +57,7 @@ spec:
             - name: MILVUS_HOST
               value: "{{ .Release.Name }}-milvus"
             - name: MILVUS_PORT
-              value: "{{ .Values.amateMilvus.deployPort }}"
+              value: "{{ .Values.amateMilvus.service.deployPort }}"
           envFrom:
             - secretRef:
                 name: amate-ai-env
