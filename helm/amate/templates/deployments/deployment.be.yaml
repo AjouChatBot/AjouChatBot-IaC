@@ -53,7 +53,7 @@ spec:
             - name: MONGODB_URI
               value: "mongodb://{{ .Release.Name }}-mongo:{{ .Values.amateBe.mongoDbPort }}"
             - name: AI_SERVER_URL
-              value: "http://{{ .Release.Name }}-ai:{{ .Values.amateAi.service.port }}/"
+              value: "http://{{ .Release.Name }}-ai:{{ .Values.amateAi.service.deployPort }}/"
           envFrom:
             - secretRef:
                 name: amate-be-env
