@@ -1,7 +1,6 @@
 {{- if .Values.amateMilvus.persistence.enabled }}
 apiVersion: v1
 kind: PersistentVolumeClaim
-provisioner: ebs.csi.aws.com
 metadata:
   name: {{ include "amate.fullname" . }}-milvus-pvc
   labels:
