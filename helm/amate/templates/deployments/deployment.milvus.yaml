@@ -19,6 +19,9 @@ spec:
         - name: milvus-storage
           persistentVolumeClaim:
             claimName: {{ include "amate.fullname" . }}-milvus-pvc
+        - name: milvus-config
+          configMap:
+            name: milvus-config
       containers:
         - name: milvus
           image: "{{ .Values.amateMilvus.image.repository }}:{{ .Values.amateMilvus.image.tag }}"
@@ -28,7 +31,10 @@ spec:
           volumeMounts:
             - name: milvus-storage
               mountPath: /var/lib/milvus
-          args: ["milvus", "run", "standalone"]
+            - name: milvus-config
+              mountPath: /milvus/configs/config.yaml
+              subPath: config.yaml
+          args: ["milvus", "run", "standalone", "--config", "/milvus/configs/config.yaml"]
           {{- with .Values.amateMilvus.livenessProbe }}
           livenessProbe:
             {{- toYaml . | nindent 12 }}
