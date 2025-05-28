@@ -178,7 +178,7 @@ amateAttu:
     pullPolicy: IfNotPresent
   service:
     port: 3000
-    deployPort: 30031
+    deployPort: 30013
 
 amateMilvus:
   replicaCount: 1
