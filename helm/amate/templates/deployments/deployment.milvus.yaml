@@ -34,7 +34,7 @@ spec:
             - name: milvus-config
               mountPath: /milvus/configs/config.yaml
               subPath: config.yaml
-          args: ["milvus", "run", "standalone", "--config", "/milvus/configs/config.yaml"]
+          args: ["milvus", "run", "standalone"]
           {{- with .Values.amateMilvus.livenessProbe }}
           livenessProbe:
             {{- toYaml . | nindent 12 }}
