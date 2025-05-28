@@ -6,20 +6,82 @@ metadata:
     {{- include "amate.labels" . | nindent 4 }}
     component: attu
 spec:
-  replicas: 1
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.amateAttu.replicaCount }}
+  {{- end }}
   selector:
     matchLabels:
-      app: attu
+      {{- include "amate.selectorLabels" . | nindent 6 }}
+      component: attu
   template:
     metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       labels:
-        app: attu
+        {{- include "amate.labels" . | nindent 8 }}
+        {{- with .Values.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+        component: attu
     spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "amate.serviceAccountName" . }}
+      {{- with .Values.podSecurityContext }}
+      securityContext:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       containers:
-        - name: attu
+        - name: {{ .Chart.Name }}-attu
+          {{- with .Values.securityContext }}
+          securityContext:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
           image: "{{ .Values.amateAttu.image.repository }}:{{ .Values.amateAttu.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.amateAttu.image.pullPolicy | default "IfNotPresent" }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.amateAttu.service.port }}
+              protocol: TCP
           env:
             - name: MILVUS_URL
-              value: "{{ .Values.amateAttu.milvusUrl }}"
-          ports:
-            - containerPort: {{ .Values.amateAttu.service.port }}
+              value: "http://{{ .Release.Name }}-milvus:{{ .Values.amateMilvus.service.deployPort }}/"
+          envFrom:
+            - secretRef:
+                name: amate-be-env
+          {{- with .Values.amateAttu.livenessProbe }}
+          livenessProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.amateAttu.readinessProbe }}
+          readinessProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.resources }}
+          resources:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.volumeMounts }}
+          volumeMounts:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+      {{- with .Values.volumes }}
+      volumes:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
