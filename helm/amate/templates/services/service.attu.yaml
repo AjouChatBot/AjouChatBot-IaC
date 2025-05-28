@@ -1,0 +1,22 @@
+
+
+apiVersion: v1
+kind: Service
+
+metadata:
+  name: {{ include "amate.fullname" . }}-attu
+  labels:
+    {{- include "amate.labels" . | nindent 4 }}
+    component: attu
+
+spec:
+  type: NodePort
+  ports:
+    - port: {{ .Values.amateAttu.service.deployPort }}
+      targetPort: {{ .Values.amateAttu.service.port }}
+      nodePort: {{ .Values.amateAttu.service.deployPort }}
+      protocol: TCP
+      name: http
+  selector:
+    {{- include "amate.selectorLabels" . | nindent 4 }}
+    component: attu

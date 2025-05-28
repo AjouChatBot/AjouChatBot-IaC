@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "amate.fullname" . }}-attu
+  labels:
+    {{- include "amate.labels" . | nindent 4 }}
+    component: attu
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: attu
+  template:
+    metadata:
+      labels:
+        app: attu
+    spec:
+      containers:
+        - name: attu
+          image: "{{ .Values.amateAttu.image.repository }}:{{ .Values.amateAttu.image.tag | default .Chart.AppVersion }}"
+          env:
+            - name: MILVUS_URL
+              value: "{{ .Values.amateAttu.milvusUrl }}"
+          ports:
+            - containerPort: {{ .Values.amateAttu.service.port }}

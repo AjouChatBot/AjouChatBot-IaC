@@ -169,6 +169,17 @@ amateRedis:
   #   timeoutSeconds: 5
   #   failureThreshold: 3
 
+amateAttu:
+  replicaCount: 1
+  component: attu
+  image:
+    repository: zilliz/attu
+    tag: v2.2.13
+    pullPolicy: IfNotPresent
+  service:
+    port: 3000
+    deployPort: 30031
+
 amateMilvus:
   replicaCount: 1
   component: dbmilvus
