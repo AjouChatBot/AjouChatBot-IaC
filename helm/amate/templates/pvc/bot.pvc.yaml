@@ -3,6 +3,7 @@ kind: PersistentVolumeClaim
 metadata:
   name: scrap-bot-data-pvc
 spec:
+  storageClassName: gp3
   accessModes:
     - ReadWriteOnce
   resources:
@@ -14,6 +15,7 @@ kind: PersistentVolumeClaim
 metadata:
   name: scrap-bot-files-pvc
 spec:
+  storageClassName: gp3
   accessModes:
     - ReadWriteOnce
   resources:
