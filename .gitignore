@@ -30,6 +30,6 @@ override.tf.json
 .vscode/
 
 # Credentials
-*.secret
+*secret*
 .*/
 *.security.*

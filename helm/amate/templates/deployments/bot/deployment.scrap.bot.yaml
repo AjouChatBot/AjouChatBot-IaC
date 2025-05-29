@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: scrap-bot
+  labels:
+    app: scrap-bot
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: scrap-bot
+  template:
+    metadata:
+      labels:
+        app: scrap-bot
+    spec:
+      containers:
+      - name: scrap-bot
+        image: ajoumate/scrap_bot:latest
+        imagePullPolicy: Always
+        envFrom:
+          - secretRef:
+              name: scrap-bot-secrets
+        volumeMounts:
+        - name: data-volume
+          mountPath: /data
+        - name: files-volume
+          mountPath: /data/files
+      volumes:
+      - name: data-volume
+        persistentVolumeClaim:
+          claimName: scrap-bot-data-pvc
+      - name: files-volume
+        persistentVolumeClaim:
+          claimName: scrap-bot-files-pvc 
