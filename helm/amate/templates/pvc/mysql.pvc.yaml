@@ -1,0 +1,16 @@
+{{- if .Values.amateMysql.persistence.enabled }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "amate.fullname" . }}-mysql-pvc
+  labels:
+    app.kubernetes.io/name: {{ include "amate.name" . }}
+    app.kubernetes.io/component: {{ .Values.amateMysql.component }}
+spec:
+  accessModes:
+    - {{ .Values.amateMysql.persistence.accessMode }}
+  resources:
+    requests:
+      storage: {{ .Values.amateMysql.persistence.size }}
+  storageClassName: {{ .Values.amateMysql.persistence.storageClass }}
+{{- end }}

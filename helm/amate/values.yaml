@@ -88,6 +88,7 @@ amateAi:
   #   timeoutSeconds: 2
   #   failureThreshold: 3
 
+
 amateMongo:
   replicaCount: 1
   component: dbmongo
@@ -205,7 +206,7 @@ amateMilvus:
     storageClass: gp3
     accessMode: ReadWriteOnce
     size: 100Gi
-    
+
   # livenessProbe:
   #   httpGet:
   #     path: /healthz
@@ -223,6 +224,19 @@ amateMilvus:
   #   periodSeconds: 5
   #   timeoutSeconds: 3
   #   failureThreshold: 3
+
+amateMysql:
+  replicaCount: 1
+  component: mysql
+  service:
+    port: 3306
+    deployPort: 30013
+  persistence:
+    enabled: true
+    storageClass: gp3
+    accessMode: ReadWriteOnce
+    size: 50Gi
+    
 
 # 개인 저장소에서 이미지를 가져오기 위한 비밀 정보를 설정합니다. 자세한 내용은 https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/ 를 참고하세요.
 imagePullSecrets: []

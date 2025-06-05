@@ -33,3 +33,4 @@ override.tf.json
 *secret*
 .*/
 *.security.*
+.aws.access.sh
