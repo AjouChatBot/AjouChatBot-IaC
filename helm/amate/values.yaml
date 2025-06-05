@@ -230,7 +230,7 @@ amateMysql:
   component: mysql
   service:
     port: 3306
-    deployPort: 30013
+    deployPort: 30014
   persistence:
     enabled: true
     storageClass: gp3
