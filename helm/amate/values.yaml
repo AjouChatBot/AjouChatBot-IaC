@@ -69,6 +69,19 @@ amateAi:
   redisPort: 30011
   milvusPort: 30012
 
+amateAiKeyword:
+  replicaCount: 1
+  component: ai-keyword
+  image:
+    repository: ajoumate/amate-ai-keyword
+    tag: latest
+    pullPolicy: Always
+  service:
+    port: 8000
+    deployPort: 30004
+  redisPort: 30011
+  milvusPort: 30012
+
   # 라이브니스 및 레디니스 프로브를 설정합니다. 자세한 내용은 https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/ 를 참고하세요.
   # livenessProbe:
   #   httpGet:

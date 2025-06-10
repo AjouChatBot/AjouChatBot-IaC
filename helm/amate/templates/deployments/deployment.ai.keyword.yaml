@@ -1,0 +1,91 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: {{ include "amate.fullname" . }}-ai-keyword
+  labels:
+    {{- include "amate.labels" . | nindent 4 }}
+    component: ai-keyword
+
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.amateAiKeyword.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "amate.selectorLabels" . | nindent 6 }}
+      component: ai-keyword
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "amate.labels" . | nindent 8 }}
+        {{- with .Values.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+        component: ai-keyword
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "amate.serviceAccountName" . }}
+      {{- with .Values.podSecurityContext }}
+      securityContext:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: {{ .Chart.Name }}-ai-keyword
+          {{- with .Values.securityContext }}
+          securityContext:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          image: "{{ .Values.amateAiKeyword.image.repository }}:{{ .Values.amateAiKeyword.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.amateAiKeyword.image.pullPolicy | default "IfNotPresent" }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.amateAiKeyword.service.port }}
+              protocol: TCP
+          env:
+            - name: MILVUS_HOST
+              value: "{{ .Release.Name }}-milvus"
+            - name: MILVUS_PORT
+              value: "{{ .Values.amateMilvus.service.port }}"
+          envFrom:
+            - secretRef:
+                name: amate-ai-keyword-env
+          {{- with .Values.amateAiKeyword.livenessProbe }}
+          livenessProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.amateAiKeyword.readinessProbe }}
+          readinessProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.resources }}
+          resources:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.volumeMounts }}
+          volumeMounts:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+      {{- with .Values.volumes }}
+      volumes:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
